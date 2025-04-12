@@ -1,1 +1,4 @@
-console.log('HELLO WORLD');
+import './style.css';
+import App from './app/app';
+
+const app = new App();
