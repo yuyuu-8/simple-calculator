@@ -1,7 +1,7 @@
 export const ElementParams = {
-  tag: string,
+  tag: String,
   classNames: Array,
-  textContent: string,
+  textContent: String,
   callback: Function,
 };
 
