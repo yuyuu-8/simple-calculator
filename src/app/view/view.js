@@ -1,7 +1,7 @@
 'use strict';
 import ButtonCreator from '../utils/button/button-creator.js';
 import ElementCreator from '../utils/element-creator.js';
-import { validateInput } from '../utils/calculator.js';
+import { validateInput, calculate } from '../utils/calculator.js';
 import './view.css';
 
 export function createCalculatorUI() {
@@ -50,9 +50,38 @@ export function createCalculatorUI() {
             displayElement.value = displayElement.value.slice(0, -1) || '0';
           };
           break;
+        case '+/-':
+          callback = () => {
+            const current = displayElement.value;
+            const match = current.match(/(\(-?\d+(\.\d+)?\)|-?\d+(\.\d+)?)$/);
+
+            if (match) {
+              const number = match[0];
+              let replacement;
+              if (number.startsWith('(-')) {
+                replacement = number.slice(2, -1);
+              } else if (number.startsWith('-')) {
+                replacement = `($number.slice(1)}`;
+              } else {
+                replacement = `(-${number})`;
+              }
+
+              displayElement.value =
+                current.slice(0, -number.length) + replacement;
+            }
+          };
+          break;
         case '=':
           callback = () => {
-            // TO DO!
+            const input = displayElement.value
+              .replace(/×/g, '*')
+              .replace(/÷/g, '/')
+              .replace(/−/g, '-')
+              .replace(/·/g, '.')
+              .replace(/,/g, '.');
+
+            const result = calculate(input);
+            displayElement.value = result;
           };
           break;
         default:

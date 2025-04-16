@@ -40,10 +40,15 @@ export function calculate(expression) {
 }
 
 function tokenize(expression) {
-  const regex = /(\d+(\.\d+)?)|[_\-*/()]/g;
+  const regex = /(\(-?\d+(\.\d+)?\))|(-?\d+(\.\d+)?)|[+\-*/()]/g;
   const tokens = expression.match(regex);
   if (!tokens) throw new Error('Invalid expression');
-  return tokens;
+  return tokens.map((token) => {
+    if (/^\(-?\d+(\.\d+)?\)$/.test(token)) {
+      return token.slice(1, -1);
+    }
+    return token;
+  });
 }
 
 function toRPN(tokens) {
