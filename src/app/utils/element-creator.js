@@ -29,7 +29,9 @@ export default class ElementCreator {
   }
 
   setCallback(callback) {
-    this.element.addEventListener('click', (e) => callback(e));
+    if (typeof callback === 'function') {
+      this.element.addEventListener('click', (e) => callback(e));
+    }
   }
 
   getElement() {
