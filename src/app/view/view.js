@@ -27,41 +27,53 @@ export function createCalculatorUI() {
   const calculatorElement = new ElementCreator(elementParams);
   calculatorElement.addInnerElement(display);
 
-  const buttons = [
-    { class: 'op', text: 'AC', callback: null },
-    { class: 'op', text: '(', callback: null },
-    { class: 'op', text: ')', callback: null },
-    { class: 'op', text: '×', callback: null },
-    { class: 'op', text: '√', callback: null },
-    { class: 'op', text: '%', callback: null },
-    { class: 'op', text: '+/-', callback: null },
-    { class: 'op', text: '÷', callback: null },
-    { class: 'num', text: '7', callback: null },
-    { class: 'num', text: '8', callback: null },
-    { class: 'num', text: '9', callback: null },
-    { class: 'op', text: '−', callback: null },
-    { class: 'num', text: '4', callback: null },
-    { class: 'num', text: '5', callback: null },
-    { class: 'num', text: '6', callback: null },
-    { class: 'op', text: '+', callback: null },
-    { class: 'num', text: '1', callback: null },
-    { class: 'num', text: '2', callback: null },
-    { class: 'num', text: '3', callback: null },
-    { class: 'op', text: '=', callback: null },
-    { class: 'num', text: '0', callback: null },
-    { class: 'op', text: '·', callback: null },
-    { class: 'op', text: '⌫', callback: null },
+  const buttonLayout = [
+    ['AC', '(', ')', '×'],
+    ['√', '%', '+/-', '÷'],
+    ['7', '8', '9', '−'],
+    ['4', '5', '6', '+'],
+    ['1', '2', '3', '='],
+    ['0', '·', '⌫'],
   ];
 
-  buttons.forEach(({ class: className, text, callback }) => {
-    const button = new ButtonCreator({
-      tag: 'button',
-      classNames: [className],
-      textContent: text,
-      callback,
-    });
+  buttonLayout.forEach((row) => {
+    row.forEach((text) => {
+      const className = isNaN(text) && text !== '·' ? 'op' : 'num';
+      let callback;
 
-    calculatorElement.addInnerElement(button.getElement());
+      switch (text) {
+        case 'AC':
+          callback = () => (displayElement.value = '0');
+          break;
+        case '⌫':
+          callback = () => {
+            displayElement.value = displayElement.value.slice(0, -1) || '0';
+          };
+          break;
+        case '=':
+          callback = () => {
+            // TO DO!
+          };
+          break;
+        default:
+          callback = () => {
+            if (displayElement.value === '0') {
+              displayElement.value = text;
+            } else {
+              displayElement.value += text;
+            }
+          };
+      }
+
+      const button = new ButtonCreator({
+        tag: 'button',
+        classNames: [className],
+        textContent: text,
+        callback,
+      });
+
+      calculatorElement.addInnerElement(button.getElement());
+    });
   });
 
   return calculatorElement.getElement();
