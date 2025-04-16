@@ -1,0 +1,57 @@
+{
+  "name": "decision-making-tool",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "build:dev": "webpack --env mode=development",
+    "build:prod": "webpack --env mode=production",
+    "start": "webpack serve --env mode=development",
+    "eslint": "./node_modules/.bin/eslint '**/*.{js}'",
+    "eslint:fix": "npm run eslint -- --fix",
+    "format": "prettier-eslint '**/*.{js}' --write",
+    "stylelint": "stylelint '**/*.css' --fix",
+    "prepare": "husky install"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint --fix",
+    "*.ts": "eslint --fix",
+    "*.css": "stylelint --fix",
+    "*.json": "prettier --write",
+    "*.md": "prettier --write"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@babel/core": "^7.26.10",
+    "@babel/preset-env": "^7.26.9",
+    "@commitlint/config-conventional": "^19.8.0",
+    "@types/node": "^20.8.3",
+    "@types/webpack": "^5.28.3",
+    "@types/webpack-dev-server": "^4.7.2",
+    "babel-loader": "^10.0.0",
+    "commitlint": "^19.8.0",
+    "css-loader": "^6.8.1",
+    "eslint": "^9.22.0",
+    "eslint-config-prettier": "^10.1.1",
+    "html-webpack-plugin": "^5.5.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.0",
+    "prettier": "^3.5.3",
+    "style-loader": "^3.3.3",
+    "stylelint": "^16.16.0",
+    "stylelint-config-clean-order": "^7.0.0",
+    "stylelint-config-standard": "^37.0.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  },
+  "dependencies": {
+    "glob": "^11.0.1"
+  }
+}
