@@ -51,7 +51,7 @@ button {
 
 @media (width <= 600px) {
   button {
-    height: 45px;
+    height: 30px;
     padding: 8px;
     font-size: 1.2em;
   }
@@ -65,7 +65,7 @@ button {
 
 @media (width <= 400px) {
   button {
-    height: 40px;
+    height: 25px;
     font-size: 1em;
   }
 
