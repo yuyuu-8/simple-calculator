@@ -31,7 +31,7 @@ Make sure you have **Node.js** installed.
    ```
 3. Run the dev server:
    ```bash
-   npm start
+   npm run start
    ```
 4. Open in browser:
    http://localhost:3000
