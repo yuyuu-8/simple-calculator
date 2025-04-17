@@ -2,6 +2,7 @@
 import ButtonCreator from '../utils/button/button-creator.js';
 import ElementCreator from '../utils/element-creator.js';
 import { validateInput, calculate } from '../utils/calculator.js';
+import clickSound from '../../assets/click.mp3';
 import './view.css';
 
 export function createCalculatorUI() {
@@ -19,6 +20,9 @@ export function createCalculatorUI() {
     callback: null,
   });
 
+  const buttonSound = new Audio(clickSound);
+  buttonSound.volume = 1;
+
   let soundOn = true;
   const soundButton = new ButtonCreator({
     tag: 'button',
@@ -27,6 +31,7 @@ export function createCalculatorUI() {
     callback: () => {
       soundOn = !soundOn;
       soundButton.setTextContent(soundOn ? '🔊' : '🔇');
+      playSound(soundOn, buttonSound);
     },
   });
 
@@ -39,6 +44,7 @@ export function createCalculatorUI() {
       darkTheme = !darkTheme;
       document.body.classList.toggle('dark-theme', darkTheme);
       themeButton.setTextContent(darkTheme ? '🌙' : '🌞');
+      playSound(soundOn, buttonSound);
     },
   });
 
@@ -62,7 +68,10 @@ export function createCalculatorUI() {
   const displayElement = display.getElement();
   displayElement.type = 'text';
   displayElement.value = '0';
-  displayElement.addEventListener('keydown', validateInput);
+  displayElement.addEventListener('keydown', (e) => {
+    validateInput(e);
+    playSound(soundOn, buttonSound);
+  });
 
   const calculatorElement = new ElementCreator(elementParams);
   calculatorElement.addInnerElement(display);
@@ -83,11 +92,15 @@ export function createCalculatorUI() {
 
       switch (text) {
         case 'AC':
-          callback = () => (displayElement.value = '0');
+          callback = () => {
+            displayElement.value = '0';
+            playSound(soundOn, buttonSound);
+          };
           break;
         case '⌫':
           callback = () => {
             displayElement.value = displayElement.value.slice(0, -1) || '0';
+            playSound(soundOn, buttonSound);
           };
           break;
         case '+/-':
@@ -109,6 +122,7 @@ export function createCalculatorUI() {
               displayElement.value =
                 current.slice(0, -number.length) + replacement;
             }
+            playSound(soundOn, buttonSound);
           };
           break;
         case '%':
@@ -131,6 +145,7 @@ export function createCalculatorUI() {
                   expr.slice(0, -number.length) + `(${number}*0.01)`;
               }
             }
+            playSound(soundOn, buttonSound);
           };
           break;
         case '√':
@@ -140,6 +155,7 @@ export function createCalculatorUI() {
             } else {
               displayElement.value += '√(';
             }
+            playSound(soundOn, buttonSound);
           };
           break;
         case '=':
@@ -153,6 +169,7 @@ export function createCalculatorUI() {
 
             const result = calculate(input);
             displayElement.value = result;
+            playSound(soundOn, buttonSound);
           };
           break;
         default:
@@ -162,6 +179,7 @@ export function createCalculatorUI() {
             } else {
               displayElement.value += text;
             }
+            playSound(soundOn, buttonSound);
           };
       }
 
@@ -180,4 +198,10 @@ export function createCalculatorUI() {
   appContainer.addInnerElement(calculatorElement);
 
   return appContainer.getElement();
+}
+
+function playSound(soundOn, buttonSound) {
+  if (soundOn) {
+    buttonSound.play().catch((e) => console.log('Audio play error:', e));
+  }
 }
