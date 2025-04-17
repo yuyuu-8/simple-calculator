@@ -51,26 +51,6 @@ body {
   font-size: 24px;
   text-align: right;
 
-  background-color: #fff;
+  background-color: #e0e0e0;
   box-shadow: inset 0 1px 3px rgba(0 0 0 / 10%);
-}
-
-body.dark-theme {
-  color: #eee;
-  background-color: #121212;
-}
-
-body.dark-theme .calculator-container {
-  background-color: #1e1e1e;
-}
-
-body.dark-theme .calculator-display {
-  color: #fff;
-  background-color: #2a2a2a;
-}
-
-body.dark-theme button {
-  border: none;
-  color: #fff;
-  background-color: #333;
 }

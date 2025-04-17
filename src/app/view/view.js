@@ -4,6 +4,7 @@ import ElementCreator from '../utils/element-creator.js';
 import { validateInput, calculate } from '../utils/calculator.js';
 import clickSound from '../../assets/click.mp3';
 import './view.css';
+import './dark-theme.css';
 
 export function createCalculatorUI() {
   const appContainer = new ElementCreator({
@@ -38,7 +39,7 @@ export function createCalculatorUI() {
   let darkTheme = false;
   const themeButton = new ButtonCreator({
     tag: 'button',
-    classNames: [],
+    classNames: ['theme-button'],
     textContent: '🌞',
     callback: () => {
       darkTheme = !darkTheme;
@@ -82,7 +83,7 @@ export function createCalculatorUI() {
     ['7', '8', '9', '−'],
     ['4', '5', '6', '+'],
     ['1', '2', '3', '='],
-    ['0', '·', '⌫'],
+    ['0', '.', '⌫'],
   ];
 
   buttonLayout.forEach((row) => {
