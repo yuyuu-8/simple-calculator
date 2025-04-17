@@ -37,15 +37,22 @@ module.exports = (env) => {
           type: 'asset/resource',
         },
         {
+          test: /\.(mp3|wav|ogg)$/i,
+          type: 'asset/resource',
+          generator: {
+            filename: 'assets/audio/[name][ext]',
+          },
+        },
+        {
           test: /\.js$/,
           exclude: /node_modules/,
           use: {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env']
-            }
-          }
-        }
+              presets: ['@babel/preset-env'],
+            },
+          },
+        },
       ],
     },
     resolve: {

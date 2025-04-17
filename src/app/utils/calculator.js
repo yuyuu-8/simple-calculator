@@ -40,8 +40,12 @@ export function calculate(expression) {
 }
 
 function tokenize(expression) {
-  const regex = /(\d+(\.\d+)?)|[_\-*/()]/g;
+  expression = expression.replace(/\s+/g, '');
+  expression = expression.replace(/\(\s*-\s*(\d+(\.\d+)?)\s*\)/g, '(0-$1)');
+
+  const regex = /√|\d+(\.\d+)?|[+\-*/()%]/g;
   const tokens = expression.match(regex);
+
   if (!tokens) throw new Error('Invalid expression');
   return tokens;
 }
@@ -49,15 +53,18 @@ function tokenize(expression) {
 function toRPN(tokens) {
   const output = [];
   const operators = [];
-  const precedence = { '+': 1, '-': 1, '*': 2, '/': 2 };
+  const precedence = { '+': 1, '-': 1, '*': 2, '/': 2, '√': 3 };
 
   for (const token of tokens) {
     if (!isNaN(token)) {
       output.push(token);
-    } else if ('+-*/'.includes(token)) {
+    } else if (token === '√') {
+      operators.push(token);
+    } else if ('+-*/%√'.includes(token)) {
       while (
         operators.length &&
-        precedence[operators.at(-1)] >= precedence[token]
+        precedence[operators.at(-1)] >= precedence[token] &&
+        operators.at(-1) !== '('
       ) {
         output.push(operators.pop());
       }
@@ -69,6 +76,10 @@ function toRPN(tokens) {
         output.push(operators.pop());
       }
       if (operators.at(-1) === '(') operators.pop();
+
+      if (operators.at(-1) === '√') {
+        output.push(operators.pop());
+      }
     }
   }
 
@@ -80,6 +91,10 @@ function evaluateRPN(rpn) {
   for (const token of rpn) {
     if (!isNaN(token)) {
       stack.push(parseFloat(token));
+    } else if (token === '√') {
+      const a = stack.pop();
+      if (a < 0) throw new Error('Square root of negative number');
+      stack.push(Math.sqrt(a));
     } else {
       const b = stack.pop();
       const a = stack.pop();
