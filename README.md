@@ -38,7 +38,7 @@ Make sure you have **Node.js** installed.
 
 ---
 
-## Project structure / Структура проекта
+## Project structure
 ```bash
 ├── 📁build/                             # project build with combined js file 
 ├── 📁public/                            # index.html template and favicon
